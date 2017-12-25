@@ -1,8 +1,9 @@
-from tic_tac_toe import State
 from collections import defaultdict
-from itertools import izip
 from copy import deepcopy
+import gzip
+import cPickle as pickle
 import random
+
 
 class Player(object):
     def __init__(self, symbol):
@@ -23,29 +24,16 @@ class Player(object):
 
     def analyze_game_history(game_result):
         if game_result in ['draw', 'win']:
+            for state, choice in self.game_history:
+                # add perspective of 'x' or 'o' player
+                policy[state][choice] += 1
+        else:
+            # maybe do: policy[state][choice] -= 1
             pass
-        else: # 'loose'
-            pass
 
-def play(players):
-    board = State()
-    step = 0
-    while not board.winner() and not board.game_over():
-        pos = players[step % 2].make_move(board)
-        board.insert(pos, 'o' if step % 2 == 0 else 'x')
-        step += 1
-
-    winner = board.winner()
-    print board
-    for player in players:
-        player.analyze_game_history()
-        player.clear_game_history()
-
-
-def learn(reps):
-    players = Player('o'), Player('x')
-    for rep in range(reps):
-        play(players)
-
-
-learn(1)
+    def save_policy(self, filename):
+        with gzip.open(filename, 'wb') as file_:
+            pickle.dump(self.policy, file_)
+        
+    def load_policy():
+        pass

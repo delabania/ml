@@ -19,6 +19,12 @@ class State(object):
     def __str__(self):
         return '\n'.join(' '.join(row) for row in self.board)
 
+    def __eq__(self, other):
+        return self.board == other.board
+
+    def __ne__(self, other):
+        return self.board != other.board
+
     def insert(self, pos, symbol):
         assert symbol in ['x', 'o']
         x, y = pos
@@ -31,6 +37,7 @@ class State(object):
             for column_num, symbol in enumerate(row):
                 if symbol == '-':
                     yield row_num, column_num
+    
     def game_over(self):
         return len(list(self.possible_moves())) == 0
 
