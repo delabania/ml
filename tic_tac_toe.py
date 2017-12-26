@@ -13,7 +13,12 @@ class State(object):
         yield list(reversed(State.CROSS_LINE))
 
     def __init__(self):
-        #board = 'xox--x--o'
+        """
+            board = [x,o,x],[-,-,x],[-,-,o] representing:
+            xox
+            --x
+            --o
+        """
         self.board = [['-' for _ in range(3)] for _ in range(3)]
 
     def __str__(self):
